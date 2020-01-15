@@ -1,0 +1,26 @@
+--- # This is for NFSClient setup
+
+- hosts: nfsclient
+  become: yes
+  tasks:
+          - name: "Install NFS Common"
+            apt:
+                    name: nfs-common
+                    state: present
+          - name: "Create NFS Share_Directory"
+            file:
+                    path: "/nfs-share"
+                    state: directory
+          - name: "Mount /share from nfs server to client /nfs-share"
+            mount:
+                   path: "/nfs-share"
+                   src: "node1:/share"
+                   state: present
+                   fstype: nfs
+          - name: "Add test file"
+            file:
+                   path: "/nfs-share/test.file"
+                   state: touch
+                   owner: vagrant
+                   group: vagrant
+

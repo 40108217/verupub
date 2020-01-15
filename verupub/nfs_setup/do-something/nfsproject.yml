@@ -1,0 +1,48 @@
+--- # This is for setting up the NFS Infrastructure
+
+
+- hosts: nfsserver
+  become: yes
+  vars:
+          client_ips:
+                  - "node2"
+                  - "node3"
+  handlers:
+          - name: "restart nfs server"
+            service:
+                    name: nfs-kernel-server
+                    state: restarted
+  tasks:
+          - name: "Install the NFS Common"
+            apt:
+                    name: nfs-common
+                    state: present
+          - name: "Update Cache"
+            apt:
+                    update_cache: yes
+                    state: present
+          - name: "Install the NFS server"
+            apt:
+                    name: nfs-kernel-server
+                    state: present
+          - name: "Start NFS Service"
+            service:
+                    name: nfs-kernel-server
+                    state: started
+          - name: "Enable NFS Service"
+            service:
+                    name: nfs-kernel-server
+                    enabled: yes
+          - name: "Create NFS Share"
+            file:
+                    path: "/share"
+                    state: directory
+                    mode: 0777
+          - name: "Add client to NFS Share"
+            template:
+                    src: /vagrant/do-something/exports.j2
+                    dest: /etc/exports
+            notify:
+                    - "restart nfs server"
+                        
+
