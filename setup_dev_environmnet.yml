@@ -1,0 +1,46 @@
+--- # Setup developers environmnet
+- hosts: devmachines
+  become: yes
+  tasks:
+          - name: "Install basic softwares"
+            apt:
+                    name: software-properties-common
+                    state: present
+
+          - name: "Install GIT"
+            apt:
+                    name: git
+                    state: present
+
+          - name: "Setup GIT local Repository folder"
+            file:
+                    path: /git
+                    state: directory
+
+          - name: "Install vim"
+            apt:
+                    name: vim
+                    state: present
+
+          - name: "Setup coding folder"
+            file:
+                    path: /coding
+                    state: directory
+
+          - name: "Add developers Group"
+            group:
+                    name: developers
+                    state: present
+
+# Setting up webserver
+- hosts: webservers
+  become: yes
+  tasks:
+          - name: "Install nginx"
+            apt:
+                    name: nginx
+                    state: present
+          - name: "Start nginx service"
+            service:
+                    name: nginx
+                    state: started
