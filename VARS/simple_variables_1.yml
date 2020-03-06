@@ -1,0 +1,16 @@
+--- #Use the variables to ease the refrence call
+- hosts: webservers
+  vars:
+          home: "/home/vagrant"
+          music_folder: "/home/vagrant/music"
+
+  tasks:
+
+          - name: "Create the home directory"
+            file:
+                    path: "{{ home }}/index.html"
+                    state: touch
+          - name: "Create the repository for music files"
+            file:
+                    path: "{{ music_folder }}/music_readme.txt"
+                    state: directory

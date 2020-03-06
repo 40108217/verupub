@@ -1,0 +1,6 @@
+
+--- # Modularize the Variables
+
+
+home: "/home/vagrant"
+music_folder: "/home/vagrant/music"
